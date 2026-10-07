@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mon ange Magda ❤️</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--red:#e0112b;--pink:#fff0f2}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:#fff;color:#222;font-family:Georgia,'Times New Roman',serif;min-height:100vh;min-height:100dvh;overflow-x:hidden}
+.screen{display:none;min-height:100vh;position:relative}
+.screen.on{display:block}
+
+#intro{background:#fff;cursor:pointer;overflow:hidden}
+#intro.on{display:flex;align-items:center;justify-content:center;flex-direction:column;height:100vh}
+#big{font-size:150px;line-height:1;animation:beat 1s infinite;user-select:none}
+#hint{color:var(--red);margin-top:20px;font-style:italic}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.12)}}
+.bit{position:fixed;left:50%;top:50%;font-size:22px;pointer-events:none;transition:transform 1.4s cubic-bezier(.1,.7,.3,1),opacity 1.4s;z-index:9}
+
+#p2{background:linear-gradient(160deg,#ffd6dc,#ff8da1)}
+#p2.on{display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:#fff;border-radius:22px;padding:36px 28px;max-width:420px;width:100%;text-align:center;box-shadow:0 12px 40px rgba(150,0,30,.25);animation:pop .7s both}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.card h1{margin:0 0 24px;font-size:28px;color:var(--red)}
+.btns{display:flex;gap:14px;justify-content:center}
+.btn{flex:1;border:0;border-radius:40px;background:var(--red);color:#fff;font:bold 20px Georgia,serif;padding:14px 0;cursor:pointer;transition:transform .15s}
+.btn:hover{transform:scale(1.07)}
+
+#p3{background:#fff}
+#bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.fl{position:absolute;bottom:-40px;color:var(--red);animation:up linear infinite;opacity:.55}
+@keyframes up{to{transform:translateY(-115vh) rotate(25deg)}}
+.wrap{position:relative;z-index:1;max-width:620px;margin:0 auto;padding:30px 16px 60px}
+.wrap h2{text-align:center;color:var(--red);font-size:28px;margin:0 0 6px}
+.wrap>p{text-align:center;margin:0 0 22px;color:#555}
+.date{background:rgba(255,255,255,.93);border:2px solid #ffc2cb;border-radius:16px;padding:14px 16px;margin-bottom:14px}
+.date b{display:block;margin-bottom:8px;font-size:18px}
+.nums{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.nums button{flex:1;min-width:28px;border:1px solid #ffa3b1;background:#fff;border-radius:8px;padding:7px 0;cursor:pointer;font:15px Georgia,serif;color:var(--red)}
+.nums button.sel{background:var(--red);color:#fff;border-color:var(--red)}
+.date textarea{width:100%;min-height:110px;border:1px solid #ddd;border-radius:8px;padding:10px;font:16px Georgia,serif;resize:vertical;display:block}
+#send{display:block;width:100%;margin-top:18px;padding:16px}
+#done{display:none;text-align:center;background:#fff;border:2px solid #ffc2cb;border-radius:16px;padding:20px;margin-top:18px}
+#done textarea{width:100%;height:140px;margin-top:10px;font:13px monospace}
+.small{font-size:14px;color:#555}
+@media(max-width:480px){
+#big{font-size:110px}
+.card{padding:28px 18px}.card h1{font-size:23px}
+.btn{font-size:18px}
+.wrap{padding:22px 12px 50px}.wrap h2{font-size:24px}
+.date{padding:12px}.date b{font-size:17px}
+.nums button{flex:0 0 calc(20% - 4px);padding:10px 0;font-size:16px}
+.date textarea{min-height:130px}
+}
+</style>
+</head>
+<body>
+
+<div id="intro" class="screen on">
+  <div id="big">❤️</div>
+  <div id="hint">Touche le cœur…</div>
+</div>
+
+<div id="p2" class="screen">
+  <div class="card">
+    <h1>Veux-tu faire des dates avec moi ?</h1>
+    <div class="btns"><button class="btn go">Oui</button><button class="btn go">Oui</button></div>
+  </div>
+</div>
+
+<div id="p3" class="screen">
+  <div id="bg"></div>
+  <div class="wrap">
+    <h2>Qu'elle date veux tu le plus faire ? ❤️</h2>
+    <p>Note chaque idée de 1 à 10 et laisse-moi un petit mot.</p>
+    <div id="list"></div>
+    <button class="btn" id="send">Envoyer ❤️</button>
+    <div id="done">
+      <b>Merci mon amour ! 💌</b>
+      <p class="small">Si ton application mail ne s'est pas ouverte, copie ce texte et envoie-le-moi :</p>
+      <textarea id="txt" readonly></textarea>
+    </div>
+  </div>
+</div>
+
+<script>
+var EMAIL = "glendenoual@gmail.com";
+var DATES = ["Restaurant à thème 🍝","Cinéma 🎬","Pique-nique dans ma voiture sous les étoile ✨","Nettoyage de la maison le matin et film , pled , chocolat chaud l'après midi","Soirée jeux de société 🎲","Bowling 🎳","Patinoire ⛸️","Rose en allant te chercher et goutter à Oparinord 🌹","Cuisiner ensemble (gateau ou repas) 🧑‍🍳","Marcher de noel (Chartres, Lille, anvers...) 🎄","Musée (Louvre etc...)","Soirée jeux vidéo (mario kart ...) 🎮","Cosplay avec chocolat chaud et shoot + tiktok tout les deux 🎭","Shopping en amoureux 🛍️","Soirée en amoureux(je te fait a manger pendant que tu fait ta skin care et on mange devat un film) ❤️‍🔥","Journée pate fimo 🐧","Journée peinture 🎨","Combat Yu Gi Oh! 🃏","Nuzlock Pokémon (si tu aime bien) 🐬","Jeu devinette(faire deviner un personnage à l'autre) 🔮","Apprendre une danse (tiktok ou Kpop pour les refaire enssemble) 🧑‍🩰","Regarder un anime enssemble 🎴","Blinde teste musique Kpop ou autre 🎶","Grand puzzle enssemble 🧩","Jouez au échec ♟️","pique nique au parc (En fonction de la température) 🧺"];
+var $ = function(id){return document.getElementById(id)};
+function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on')});$(id).classList.add('on');window.scrollTo(0,0)}
+
+// Explosion du cœur
+var exploded=false;
+function explode(){
+  if(exploded)return;exploded=true;
+  $('big').style.visibility='hidden';$('hint').style.visibility='hidden';
+  var bits=[];
+  for(var i=0;i<70;i++){
+    var b=document.createElement('div');b.className='bit';b.textContent='❤️';
+    b.style.fontSize=(14+Math.random()*26)+'px';
+    document.body.appendChild(b);bits.push(b);
+  }
+  requestAnimationFrame(function(){requestAnimationFrame(function(){
+    bits.forEach(function(b){
+      var a=Math.random()*Math.PI*2,d=150+Math.random()*Math.max(innerWidth,innerHeight)*.8;
+      b.style.transform='translate('+Math.cos(a)*d+'px,'+Math.sin(a)*d+'px) rotate('+(Math.random()*360)+'deg)';
+      b.style.opacity='0';
+    });
+  })});
+  setTimeout(function(){show('p2')},900);
+  setTimeout(function(){bits.forEach(function(b){b.remove()})},1600);
+}
+$('intro').addEventListener('click',explode);
+setTimeout(explode,5000);
+
+// Page 2 -> 3
+document.querySelectorAll('.go').forEach(function(b){b.addEventListener('click',function(){show('p3')})});
+
+// Cœurs en fond
+for(var i=0;i<28;i++){
+  var f=document.createElement('div');f.className='fl';f.textContent='❤';
+  f.style.left=Math.random()*100+'%';
+  f.style.fontSize=(16+Math.random()*30)+'px';
+  f.style.animationDuration=(7+Math.random()*9)+'s';
+  f.style.animationDelay=(-Math.random()*14)+'s';
+  $('bg').appendChild(f);
+}
+
+// Formulaire
+var notes={};
+DATES.forEach(function(name,i){
+  var d=document.createElement('div');d.className='date';
+  var h='<b>'+name+'</b><div class="nums">';
+  for(var n=1;n<=10;n++)h+='<button type="button" data-i="'+i+'" data-n="'+n+'">'+n+'</button>';
+  h+='</div><textarea id="w'+i+'" rows="4" placeholder="Écris-moi un petit mot sur ce date…" maxlength="500"></textarea>';
+  d.innerHTML=h;$('list').appendChild(d);
+});
+$('list').addEventListener('click',function(e){
+  var t=e.target;if(t.tagName!=='BUTTON')return;
+  var i=t.dataset.i;notes[i]=t.dataset.n;
+  t.parentNode.querySelectorAll('button').forEach(function(b){b.classList.remove('sel')});
+  t.classList.add('sel');
+});
+$('send').addEventListener('click',function(){
+  var body="Mes réponses pour les dates ❤️\n\n";
+  DATES.forEach(function(name,i){
+    body+=name+" : "+(notes[i]||"pas noté")+"/10 — "+($('w'+i).value||"(pas de mot)")+"\n";
+  });
+  $('txt').value=body;$('done').style.display='block';
+  $('done').scrollIntoView({behavior:'smooth'});
+  try{location.href="mailto:"+EMAIL+"?subject="+encodeURIComponent("Mes réponses pour nos dates ❤️")+"&body="+encodeURIComponent(body)}catch(err){}
+});
+</script>
+</body>
+</html>
